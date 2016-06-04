@@ -1,0 +1,17 @@
+import React from 'react';
+
+export default class Info extends React.Component {
+    render() {
+        return (
+            <div id="info_bar">
+                <span id="player_record">
+                    Wins: {this.props.winCount} Losses: {this.props.lossCount}
+                </span>
+                <span id="buttons">
+                    <button disabled={this.props.hasStood}>Hit</button>
+                    <button disabled={this.props.hasStood}>Stand</button>
+                </span>
+            </div>
+        );
+    }
+};
