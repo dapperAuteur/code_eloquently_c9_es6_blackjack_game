@@ -1,12 +1,22 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import App from './components/app';
+import { AppContainer } from './components/app';
+import {createStore} from 'redux';
+import { Provider } from 'react-redux';
 import { fromJS, Map } from 'immutable';
+
+import reducer from './reducer';
+import { setupGame, setRecord } from '../app/action_creators';
 
 import { newDeck, deal } from './lib/cards';
 
 require('./css/main.scss');
+
+let store = createStore(reducer, undefined, window.devToolsExtension ? window.devToolsExtension() : undefined);
+
+store.dispatch(setupGame());
+store.dispatch(setRecord(0, 0));
 
 let deck = newDeck();
 let playerHand, dealerHand;
@@ -42,6 +52,8 @@ const state = fromJS({
 console.log(state);
 
 ReactDOM.render(
-    <App state={state} />,
+    <Provider store={store}>
+        <AppContainer />
+    </Provider>,
     document.getElementById('app')
 );

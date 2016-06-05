@@ -1,6 +1,7 @@
 import React from 'react';
+import { connect } from 'react-redux';
 
-export default class Info extends React.Component {
+export class Info extends React.Component {
     render() {
         return (
             <div id="info_bar">
@@ -15,3 +16,13 @@ export default class Info extends React.Component {
         );
     }
 };
+
+function mapStateToProps(state) {
+    return {
+        winCount: state.get('winCount'),
+        lossCount: state.get('lossCount'),
+        hasStood: state.get('hasStood')
+    };
+}
+
+export const InfoContainer = connect(mapStateToProps)(Info);

@@ -1,13 +1,14 @@
-import { Map } from 'immutable';
+import { Map, List } from 'immutable';
 import { expect } from 'chai';
+import { setupGame, setRecord, dealToPlayer } from '../app/action_creators';
+import { newDeck } from '../app/lib/cards';
 
 import reducer from '../app/reducer';
 
 describe('reducer', () => {
     describe("SETUP_GAME", () => {
-        const action = {
-            type: 'SETUP_GAME'
-        };
+        const action = setupGame();
+
         describe("with empty initial state", () => {
             const initialState = undefined;
             const nextState = reducer(initialState, action);
@@ -46,11 +47,7 @@ describe('reducer', () => {
     });
     
     describe("SET_RECORD", () => {
-        const action = {
-            type: 'SET_RECORD',
-            wins: 3,
-            losses: 2
-        };
+        const action = setRecord(3, 2);
         
         const initialState = new Map({'winCount': 10, 'lossCount': 7, 'deck': 'fake deck'});
         const nextState = reducer(initialState, action);
@@ -62,6 +59,20 @@ describe('reducer', () => {
         
         it('keeps old variables', () => {
             expect(nextState.get('deck')).to.eq('fake deck');
+        });
+    });
+    
+    describe("DEAL_TO_PLAYER", () => {
+        const action = dealToPlayer();
+        const initialState = new Map({"playerHand": new List(), "deck": newDeck()});
+        const nextState = reducer(initialState, action);
+        
+        it('adds one card to player hand', () => {
+            expect(nextState.get('playerHand').size).to.eq(initialState.get('playerHand').size + 1);
+        });
+        
+        it('removes one card from the deck', () => {
+            expect(nextState.get('deck').size).to.eq(initialState.get('deck').size - 1);
         });
     });
 });
