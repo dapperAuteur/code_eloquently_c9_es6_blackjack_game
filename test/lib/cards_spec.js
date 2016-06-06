@@ -56,7 +56,7 @@ describe('cards.js', () => {
         it('does not deal same card each time with different seeds', () => {
             const cards = [];
             for(let i = 0; i < 10; i += 1) {
-                cards.push(deal(deck, 1, i)[i].first());
+                cards.push(deal(deck, 1, i)[1].first());
             }
             const all_same = cards.reduce( (prev, curr) => prev && (cards[0] === curr), true );
             expect(all_same).to.eq(false);

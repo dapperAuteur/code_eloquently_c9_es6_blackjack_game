@@ -18,6 +18,10 @@ const setupGame = (currentState, seed) => {
     return currentState.merge(newState);
 };
 
+const stand = (currentState) => {
+    return currentState.merge(new Map({"hasStood": true}));
+};
+
 const setRecord = (currentState, wins, losses) => {
     return currentState.merge(new Map({ "winCount": wins, "lossCount": losses }));
 }
@@ -28,7 +32,11 @@ export default function(currentState=new Map(), action) {
             return setupGame(currentState, action.seed);
         case 'SET_RECORD':
             return setRecord(currentState, action.wins, action.losses);
-    };
+        case 'DEAL_TO_PLAYER':
+            return dealToPlayer(currentState, action.seed);
+        case 'STAND':
+            return stand(currentState);
+    }
     return currentState;
     
 }
@@ -41,12 +49,13 @@ const dealToPlayer = (currentState, seed) => {
     return currentState.merge(new Map({ deck, playerHand }));
 };
 
-export default function(currentState=new Map(), action) {
-    switch(action.type) {
+
+// export default function(currentState=new Map(), action) {
+//     switch(action.type) {
         
         
-        case 'DEAL_TO_PLAYER':
-            return dealToPlayer(currentState, action.seed);
-    }
-    return currentState;
-}
+//         case 'DEAL_TO_PLAYER':
+//             return dealToPlayer(currentState, action.seed);
+//     }
+//     return currentState;
+// }

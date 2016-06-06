@@ -29,12 +29,12 @@ describe('<App />', () => {
         expect(rendered.find('Connect(Info)')).to.have.length(1);
     });
     
-    it('passes props to <Info />', () => {
-        const info = rendered.find('Info').first();
-        expect(info).to.have.prop('winCount',state.get('winCount'));
-        expect(info).to.have.prop('lossCount',state.get('lossCount'));
-        expect(info).to.have.prop('hasStood',state.get('hasStood'));
-    });
+    // it('passes props to <Info />', () => {
+    //     const info = rendered.find('Info').first();
+    //     expect(info).to.have.prop('winCount',state.get('winCount'));
+    //     expect(info).to.have.prop('lossCount',state.get('lossCount'));
+    //     expect(info).to.have.prop('hasStood',state.get('hasStood'));
+    // });
     
     it('renders two <Hand /> components', () => {
         expect(rendered.find('Hand')).to.have.length(2);

@@ -1,6 +1,6 @@
 import { Map, List } from 'immutable';
 import { expect } from 'chai';
-import { setupGame, setRecord, dealToPlayer } from '../app/action_creators';
+import { setupGame, setRecord, dealToPlayer, stand } from '../app/action_creators';
 import { newDeck } from '../app/lib/cards';
 
 import reducer from '../app/reducer';
@@ -73,6 +73,16 @@ describe('reducer', () => {
         
         it('removes one card from the deck', () => {
             expect(nextState.get('deck').size).to.eq(initialState.get('deck').size - 1);
+        });
+    });
+    
+    describe("STAND", () => {
+        const action = stand();
+        const initialState = new Map({"hasStood": false});
+        const nextState = reducer(initialState, action);
+        
+        it('sets hasStood to true', () => {
+            expect(nextState.get('hasStood')).to.eq(true);
         });
     });
 });
