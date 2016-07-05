@@ -1,7 +1,7 @@
 import { expect } from 'chai';
-import { List } from 'immutable';
+import { List, fromJS } from 'immutable';
 
-import { newDeck, deal } from '../../app/lib/cards';
+import { newDeck, deal, score } from '../../app/lib/cards';
 
 describe('cards.js', () => {
     describe('newDeck', () => {
@@ -60,6 +60,26 @@ describe('cards.js', () => {
             }
             const all_same = cards.reduce( (prev, curr) => prev && (cards[0] === curr), true );
             expect(all_same).to.eq(false);
+        });
+    });
+    
+    describe('score()', () => {
+        describe('with numeric ranks', () => {
+            it('calculates correct score', () => {
+                let hand = fromJS([{rank: 3}, {rank: 5}]);
+                expect(score(hand)).to.eq(8);
+                hand = fromJS([{rank: 2}, {rank: 9}]);
+                expect(score(hand)).to.eq(11);
+            });
+        });
+        
+        describe('with face cards', () => {
+            it('calculates correct score', () => {
+                let hand = fromJS([{rank: 3}, {rank: 'K'}]);
+                expect(score(hand)).to.eq(13);
+                hand = fromJS([{rank: 'Q'}, {rank: 'J'}]);
+                expect(score(hand)).to.eq(20);
+            });
         });
     });
 });

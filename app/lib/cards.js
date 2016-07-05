@@ -46,3 +46,17 @@ export const deal = (deck, n, seed) => {
     }
     return [newDeck, dealtCards];
 };
+
+export const rankAsNum = (rank) => {
+    if(rank == 'K' || rank == 'Q' || rank == 'J') {
+        return 10;
+    } else {
+        return rank;
+    }
+};
+
+export const score = (cards) => {
+    return cards.reduce( (sum, card) => {
+        return sum + card.get('rank') ;
+    }, 0);
+};
