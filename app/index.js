@@ -32,7 +32,8 @@ const state = fromJS({
     dealerHand,
     "winCount": 0,
     "lossCount": 0,
-    hasStood: false
+    hasStood: false,
+    gameOver: false
 });
 // console.log("start deck:");
 // console.log(deck);

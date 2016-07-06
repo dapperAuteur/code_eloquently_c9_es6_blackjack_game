@@ -2,13 +2,20 @@ import React from 'react';
 import { InfoContainer } from './info';
 import Hand from './hand';
 import { connect } from 'react-redux';
+import { GameOverMessageContainer } from './game_over_message';
 
 export class App extends React.Component {
     render() {
+        let messageComponent;
+        if(this.props.gameOver) {
+            messageComponent = <GameOverMessageContainer win={this.props.playerWon} />;
+        }
+        
         return (
             <div className="app">
                 <h1>aweful React Blackjack</h1>
                 <InfoContainer />
+                { messageComponent }
                 <strong>Player hand:</strong>
                 <Hand cards={this.props.playerHand } />
                 <strong>Dealer hand:</strong>
@@ -21,7 +28,9 @@ export class App extends React.Component {
 function mapStateToProps(state) {
     return {
         playerHand: state.get('playerHand'),
-        dealerHand: state.get('dealerHand')
+        dealerHand: state.get('dealerHand'),
+        gameOver: state.get('gameOver'),
+        playerWon: state.get('playerWon')
     };
 }
 

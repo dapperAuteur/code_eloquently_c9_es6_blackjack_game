@@ -1,4 +1,4 @@
-import { Map, List } from 'immutable';
+import { Map, List, fromJS } from 'immutable';
 import { expect } from 'chai';
 import { setupGame, setRecord, dealToPlayer, stand } from '../app/action_creators';
 import { newDeck } from '../app/lib/cards';
@@ -25,6 +25,15 @@ describe('reducer', () => {
                 expect(nextState.get('dealerHand').size).to.eq(2);
                 expect(nextState.get('dealerHand').last()).to.eq(new Map());
             });
+            
+            it('sets up gameOver', () => {
+                expect(nextState.get('gameOver')).to.eq(false);
+            });
+            
+            it('sets up playerWon', () => {
+                expect(nextState.get('playerWon')).to.eq(undefined);
+            });
+            
         });
         
         describe("with existing initial state", () => {
@@ -42,6 +51,10 @@ describe('reducer', () => {
             
             it('overwrites old variables', () => {
                 expect(nextState.get('deck')).not.to.eq('fake deck');
+            });
+            
+            it('adds new variables', () => {
+                expect(Array.from(nextState.keys())).to.include('deck', 'playerHand', 'dealerHand', 'hasStood', 'gameOver', 'playerWon');
             });
         });
     });
@@ -64,6 +77,7 @@ describe('reducer', () => {
     
     describe("DEAL_TO_PLAYER", () => {
         const action = dealToPlayer();
+        
         const initialState = new Map({"playerHand": new List(), "deck": newDeck()});
         const nextState = reducer(initialState, action);
         
@@ -73,6 +87,24 @@ describe('reducer', () => {
         
         it('removes one card from the deck', () => {
             expect(nextState.get('deck').size).to.eq(initialState.get('deck').size - 1);
+        });
+        
+        describe("when player gets more than 21 points", () => {
+            const initialState = fromJS({
+                "playerHand": [{rank: 'K'}, {rank: 'Q'}],
+                "deck": fromJS([{rank: 'J'}]),
+                "lossCount": 0
+            });
+            const nextState = reducer(initialState, action);
+            
+            it('increases loss count by 1', () => {
+                expect(nextState.get('lossCount')).to.eq(initialState.get('lossCount') + 1);
+            });
+            
+            it('toggles gameOver and sets playerWon', () => {
+                expect(nextState.get('gameOver')).to.eq(true);
+                expect(nextState.get('playerWon')).to.eq(false);
+            });
         });
     });
     

@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { List, fromJS } from 'immutable';
+import { List, fromJS, Map } from 'immutable';
 
 import { newDeck, deal, score } from '../../app/lib/cards';
 
@@ -79,6 +79,40 @@ describe('cards.js', () => {
                 expect(score(hand)).to.eq(13);
                 hand = fromJS([{rank: 'Q'}, {rank: 'J'}]);
                 expect(score(hand)).to.eq(20);
+            });
+        });
+        
+        describe('with aces', () => {
+            it('counts aces as 11 for hands less than 21', () => {
+                const hand = fromJS([{rank: 3}, {rank: 'A'}]);
+                expect(score(hand)).to.eq(14);
+            });
+            
+            it('counts aces as 11 for hands equal to 21', () => {
+                let hand = fromJS([{rank: 10}, {rank: 'A'}]);
+                expect(score(hand)).to.eq(21);
+                hand = fromJS([{rank: 'A'}, {rank: 'K'}]);
+                expect(score(hand)).to.eq(21);
+            });
+            
+            it('counts aces as 1 for hands greater than 21', () => {
+                let hand = fromJS([{rank: 3}, {rank: 'A'}, {rank: 9}]);
+                expect(score(hand)).to.eq(13);
+                hand = fromJS([{rank: 'K'}, {rank: 'K'}, {rank: 'A'}]);
+                expect(score(hand)).to.eq(21);
+            })
+            
+            it('works with multiple aces', () => {
+                let hand = fromJS([{rank: 'A'}]);
+                expect(score(hand)).to.eq(11);
+                hand = hand.push(new Map({rank: 'A'}));
+                expect(score(hand)).to.eq(12);
+                hand = hand.push(new Map({rank: 'A'}));
+                expect(score(hand)).to.eq(13);
+                hand = hand.push(new Map({rank: 'A'}));
+                expect(score(hand)).to.eq(14);
+                hand = fromJS([{rank: 'A'}, {rank: 'K'}, {rank: 'A'}]);
+                expect(score(hand)).to.eq(12);
             });
         });
     });
