@@ -2,6 +2,7 @@ import { Map } from 'immutable';
 
 import { newDeck, deal, score } from './lib/cards';
 
+
 const setupGame = (currentState, seed) => {
     let deck = newDeck(seed);
     let playerHand, dealerHand;
@@ -13,22 +14,66 @@ const setupGame = (currentState, seed) => {
     
     const hasStood = false;
     
-    const gameOver = false;
-    const playerWon = undefined;
+    let gameOver = false;
+    let playerWon = undefined;
+    let winCount = currentState.get('winCount') || 0;
     
-    const newState = new Map({ deck, playerHand, dealerHand, hasStood, gameOver, playerWon
+    if(score(playerHand) == 21) {
+        gameOver = true;
+        playerWon = true;
+        winCount += 1;
+    }
+    
+    const newState = new Map({ deck, playerHand, dealerHand, hasStood, gameOver, playerWon, winCount
     });
     
     return currentState.merge(newState);
 };
 
-const stand = (currentState) => {
-    return currentState.merge(new Map({"hasStood": true}));
+const stand = (currentState, seed) => {
+    let newState = new Map({"hasStood": true});
+
+    let dealerHand = currentState.get('dealerHand');
+    let deck = currentState.get('deck');
+    
+    dealerHand = dealerHand.filter((element) => element != new Map());
+
+    while(score(dealerHand) < 17) {
+        let newCards;
+        [deck, newCards] = deal(deck, 1, 1);
+        dealerHand = dealerHand.push(newCards.get(0));
+    }
+    
+    let winCount = currentState.get('winCount');
+    let lossCount = currentState.get('lossCount');
+    let playerHand = currentState.get('playerHand');
+    
+    const playerScore = score(playerHand);
+    const dealerScore = score(dealerHand);
+    let playerWon = undefined;
+    
+    if(playerScore > dealerScore || dealerScore > 21) {
+        let newState = new Map({"playerWon": true});
+        //playerWon = true;
+    } else if(dealerScore > playerScore) {
+        let newState = new Map({"playerWon": false});
+        //playerWon = false;
+    }
+    
+    const gameOver = true;
+    
+    newState = newState.merge({
+        dealerHand, deck, winCount, lossCount, gameOver, playerWon
+    });
+
+    newState = newState.merge({dealerHand, deck});
+
+    return currentState.merge(newState);
 };
 
 const setRecord = (currentState, wins, losses) => {
     return currentState.merge(new Map({ "winCount": wins, "lossCount": losses }));
-}
+};
 
 export default function(currentState=new Map(), action) {
     switch(action.type) {
@@ -39,7 +84,7 @@ export default function(currentState=new Map(), action) {
         case 'DEAL_TO_PLAYER':
             return dealToPlayer(currentState, action.seed);
         case 'STAND':
-            return stand(currentState);
+            return stand(currentState, action.seed);
     }
     return currentState;
     
@@ -51,6 +96,8 @@ const dealToPlayer = (currentState, seed) => {
     const playerHand = currentState.get('playerHand').push(newCard.get(0));
     
     let newState = new Map({ deck, playerHand });
+    let playerScore;
+    let dealerScore;
     
     const newScore = score(playerHand);
     
@@ -59,6 +106,13 @@ const dealToPlayer = (currentState, seed) => {
         const gameOver = true;
         const playerWon = false;
         newState = newState.merge({lossCount, gameOver, playerWon});
+    }
+    
+    if(newScore == 21 /*|| playerScore > dealerScore || dealerScore > 21*/) {
+        const winCount = currentState.get('winCount') + 1;
+        const gameOver = true;
+        const playerWon = true;
+        newState = newState.merge({winCount, gameOver, playerWon});
     }
     
     return currentState.merge(newState);

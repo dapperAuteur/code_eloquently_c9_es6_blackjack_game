@@ -15,8 +15,8 @@ require('./css/main.scss');
 
 let store = createStore(reducer, undefined, window.devToolsExtension ? window.devToolsExtension() : undefined);
 
+// store.dispatch(setRecord(0, 0));
 store.dispatch(setupGame());
-store.dispatch(setRecord(0, 0));
 
 let deck = newDeck();
 let playerHand, dealerHand;

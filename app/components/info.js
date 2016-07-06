@@ -21,7 +21,7 @@ export class Info extends React.Component {
                     <button disabled={disableButtons}
                             onClick={this.props.onClickStand}>
                         Stand
-                        </button>
+                    </button>
                 </span>
             </div>
         );
