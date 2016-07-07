@@ -17,14 +17,15 @@ const setupGame = (currentState, seed) => {
     let gameOver = false;
     let playerWon = undefined;
     let winCount = currentState.get('winCount') || 0;
-    
+    let lossCount = currentState.get('lossCount') || 0;
+
     if(score(playerHand) == 21) {
         gameOver = true;
         playerWon = true;
         winCount += 1;
     }
     
-    const newState = new Map({ deck, playerHand, dealerHand, hasStood, gameOver, playerWon, winCount
+    const newState = new Map({ deck, playerHand, dealerHand, hasStood, gameOver, playerWon, winCount, lossCount
     });
     
     return currentState.merge(newState);
@@ -53,11 +54,13 @@ const stand = (currentState, seed) => {
     let playerWon = undefined;
     
     if(playerScore > dealerScore || dealerScore > 21) {
-        let newState = new Map({"playerWon": true});
-        //playerWon = true;
+        //newState = new Map({"playerWon": true});
+        playerWon = true;
+        winCount = (currentState.get('winCount') + 1);
     } else if(dealerScore > playerScore) {
-        let newState = new Map({"playerWon": false});
-        //playerWon = false;
+        //newState = new Map({"playerWon": false});
+        playerWon = false;
+        lossCount = (currentState.get('lossCount') + 1);
     }
     
     const gameOver = true;
@@ -66,7 +69,8 @@ const stand = (currentState, seed) => {
         dealerHand, deck, winCount, lossCount, gameOver, playerWon
     });
 
-    newState = newState.merge({dealerHand, deck});
+    //newState = newState.merge({dealerHand, deck, playerWon});
+    console.log(newState);
 
     return currentState.merge(newState);
 };
@@ -108,12 +112,26 @@ const dealToPlayer = (currentState, seed) => {
         newState = newState.merge({lossCount, gameOver, playerWon});
     }
     
-    if(newScore == 21 /*|| playerScore > dealerScore || dealerScore > 21*/) {
+    if(newScore == 21) {
         const winCount = currentState.get('winCount') + 1;
         const gameOver = true;
         const playerWon = true;
         newState = newState.merge({winCount, gameOver, playerWon});
     }
+    
+    // if(newScore > dealerScore) {
+    //     const winCount = currentState.get('winCount') + 1;
+    //     const gameOver = true;
+    //     const playerWon = true;
+    //     newState = newState.merge({winCount, gameOver, playerWon});
+    // }
+    
+    // if(dealerScore > 21) {
+    //     const winCount = currentState.get('winCount') + 1;
+    //     const gameOver = true;
+    //     const playerWon = true;
+    //     newState = newState.merge({winCount, gameOver, playerWon});
+    // }
     
     return currentState.merge(newState);
 };
