@@ -1,6 +1,6 @@
 import { Map, List, fromJS } from 'immutable';
 import { expect } from 'chai';
-import { setupGame, setRecord, dealToPlayer, stand } from '../app/action_creators';
+import { setupGame, setRecord, dealToPlayer, stand, dealToDealer } from '../app/action_creators';
 import { newDeck } from '../app/lib/cards';
 
 import proxyquire from 'proxyquire';
@@ -133,6 +133,25 @@ describe('reducer', () => {
                 expect(nextState.get('gameOver')).to.eq(true);
                 expect(nextState.get('playerWon')).to.eq(false);
             });
+        });
+    });
+    
+    describe("DEAL_TO_DEALER", () => {
+        const action = dealToDealer();
+        
+        const initialState = new Map({
+            "dealerHand": new List(),
+            "deck": newDeck()
+        });
+        
+        const nextState = reducer(initialState, action);
+        
+        it('adds one card to dealer hand', () => {
+            expect(nextState.get('dealerHand').size).to.eq(initialState.get('dealerHand').size + 1);
+        });
+        
+        it('removes one card from deck', () => {
+            expect(nextState.get('deck').size).to.eq(initialState.get('deck').size - 1);
         });
     });
     
