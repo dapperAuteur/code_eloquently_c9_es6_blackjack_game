@@ -88,7 +88,11 @@ export default function(currentState=new Map(), action) {
         case 'DEAL_TO_PLAYER':
             return dealToPlayer(currentState, action.seed);
         case 'STAND':
-            return stand(currentState, action.seed);
+            return stand(currentState);
+        case 'DEAL_TO_DEALER':
+            return dealToDealer(currentState, action.seed);
+        case 'DETERMINE_WINNER':
+            return determineWinner(currentState);
     }
     return currentState;
     
@@ -118,20 +122,6 @@ const dealToPlayer = (currentState, seed) => {
         const playerWon = true;
         newState = newState.merge({winCount, gameOver, playerWon});
     }
-    
-    // if(newScore > dealerScore) {
-    //     const winCount = currentState.get('winCount') + 1;
-    //     const gameOver = true;
-    //     const playerWon = true;
-    //     newState = newState.merge({winCount, gameOver, playerWon});
-    // }
-    
-    // if(dealerScore > 21) {
-    //     const winCount = currentState.get('winCount') + 1;
-    //     const gameOver = true;
-    //     const playerWon = true;
-    //     newState = newState.merge({winCount, gameOver, playerWon});
-    // }
     
     return currentState.merge(newState);
 };
