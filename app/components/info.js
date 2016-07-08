@@ -30,10 +30,10 @@ export class Info extends React.Component {
 
 function mapStateToProps(state) {
     return {
-        winCount: state.get('winCount'),
-        lossCount: state.get('lossCount'),
-        hasStood: state.get('hasStood'),
-        gameOver: state.get('gameOver')
+        winCount: state.game.get('winCount'),
+        lossCount: state.game.get('lossCount'),
+        hasStood: state.game.get('hasStood'),
+        gameOver: state.game.get('gameOver')
     };
 }
 
