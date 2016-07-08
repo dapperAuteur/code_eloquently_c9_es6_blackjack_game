@@ -5,6 +5,7 @@ import { score } from '../lib/cards';
 import { dealToDealer, determineWinner } from '../action_creators';
 
 const getDealerHand = (state) => state.game.get('dealerHand');
+const getSpeed = (state) => state.settings.get('speed');
 
 // console.log dealerScore before showing dealer second card and after
 // export function* onStand() {
@@ -16,6 +17,7 @@ const getDealerHand = (state) => state.game.get('dealerHand');
 // }
 // when STAND is called
 export function* onStand() {
+    const dealSpeed = yield select(getSpeed);
 // create dealerHand object
     let dealerHand;
 // while the next statement is true, do this
@@ -30,7 +32,7 @@ export function* onStand() {
         }
 // else delay 2 sec or time given below as second parameter after delay parameter
         else {
-            yield call(delay, 2000);
+            yield call(delay, dealSpeed);
         }
     }
 // run determineWinner function
