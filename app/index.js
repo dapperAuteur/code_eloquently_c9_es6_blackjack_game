@@ -1,19 +1,27 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import { AppContainer } from './components/app';
-import {createStore} from 'redux';
+import { AppContainer } from './components/app.js';
+import {createStore, applyMiddleware, compose} from 'redux';
 import { Provider } from 'react-redux';
+import createSagaMiddleware from 'redux-saga';
 import { fromJS, Map } from 'immutable';
 
 import reducer from './reducer';
 import { setupGame, setRecord } from '../app/action_creators';
+import watchActions from './sagas/index';
 
 import { newDeck, deal } from './lib/cards';
 
 require('./css/main.scss');
 
-let store = createStore(reducer, undefined, window.devToolsExtension ? window.devToolsExtension() : undefined);
+const sagaMiddleware = createSagaMiddleware();
+
+let store = createStore(reducer, undefined, compose(applyMiddleware(sagaMiddleware), window.devToolsExtension ? window.devToolsExtension() : f => f));
+
+sagaMiddleware.run(watchActions);
+
+// let store = createStore(reducer, undefined, window.devToolsExtension ? window.devToolsExtension() : undefined);
 
 // store.dispatch(setRecord(0, 0));
 store.dispatch(setupGame());
