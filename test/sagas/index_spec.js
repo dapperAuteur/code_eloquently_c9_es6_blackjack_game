@@ -1,5 +1,15 @@
 import { expect } from 'chai';
 import watchActions from '../../app/sagas/index';
+import proxyquire from 'proxyquire';
+import sinon from 'sinon';
+
+const actionType = (next) => {
+    return next.value.PUT.action.type;
+};
+
+const selectorName = (next) => {
+    return next.value.SELECT.selector.name;
+};
 
 describe('sagas', () => {
     describe('watchActions()', () => {
@@ -10,5 +20,35 @@ describe('sagas', () => {
             it('yields takeLatest', () => {
                 expect(next.value.name).to.eq('takeLatest(STAND, onStand)');
             });
+    });
+    
+    describe('onStand()', () => {
+        const cardUtils = {};
+        const stubbedSagas = proxyquire(
+            '../../app/sagas/index',
+            { '../lib/cards' : cardUtils }
+        );
+        
+        let generator;
+        
+        beforeEach( () => {
+            cardUtils.score = sinon.stub();
+            generator = stubbedSagas.onStand();
+        });
+        
+        context('when dealer does not draw', () => {
+            it('yields correct effects', () => {
+                cardUtils.score.returns(21);
+                
+                expect(actionType(generator.next())).to.eq('DEAL_TO_DEALER');
+                
+                expect(selectorName(generator.next())).to.eq('getDealerHand');
+                
+                expect(actionType(generator.next())).to.eq('DETERMINE_WINNER');
+                
+                expect(generator.next().done).to.eq(true);
+                
+            });
+        });
     });
 });

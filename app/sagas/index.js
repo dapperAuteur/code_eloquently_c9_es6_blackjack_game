@@ -1,18 +1,40 @@
 import 'babel-polyfill';
-import { takeLatest } from 'redux-saga';
-import { select } from 'redux-saga/effects';
+import { takeLatest, delay } from 'redux-saga';
+import { select, put, call } from 'redux-saga/effects';
 import { score } from '../lib/cards';
+import { dealToDealer, determineWinner } from '../action_creators';
 
 const getDealerHand = (state) => state.get('dealerHand');
 
+// console.log dealerScore before showing dealer second card and after
+// export function* onStand() {
+//     let dealerHand = yield select(getDealerHand);
+//     console.log(score(dealerHand));
+//     yield put(dealToDealer());
+//     dealerHand = yield select(getDealerHand);
+//     console.log(score(dealerHand));
+// }
+// when STAND is called
 export function* onStand() {
-    let dealerHand = yield select(getDealerHand);
-    console.log(score(dealerHand));
-    // let i = 0;
-    // while(true) {
-    //     yield i;
-    //     i++;
-    // }
+// create dealerHand object
+    let dealerHand;
+// while the next statement is true, do this
+    while(true) {
+// run function dealToDealer()
+        yield put(dealToDealer());
+// set dealerHand to dealerHand after 
+        dealerHand = yield select(getDealerHand);
+// if dealerScore is equal to or above 17 go to next yield block
+        if(score(dealerHand) >= 17) {
+            break;
+        }
+// else delay 2 sec or time given below as second parameter after delay parameter
+        else {
+            yield call(delay, 2000);
+        }
+    }
+// run determineWinner function
+    yield put(determineWinner());
 }
 
 export default function*() {
