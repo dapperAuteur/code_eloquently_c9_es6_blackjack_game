@@ -1,6 +1,6 @@
 import { Map, List, fromJS } from 'immutable';
 import { expect } from 'chai';
-import { setupGame, setRecord, dealToPlayer, stand, dealToDealer } from '../app/action_creators';
+import { setupGame, setRecord, dealToPlayer, stand, dealToDealer, determineWinner } from '../app/action_creators';
 import { newDeck } from '../app/lib/cards';
 
 import proxyquire from 'proxyquire';

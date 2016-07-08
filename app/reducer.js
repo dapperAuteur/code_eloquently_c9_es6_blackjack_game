@@ -32,22 +32,26 @@ const setupGame = (currentState, seed) => {
 };
 
 const stand = (currentState, seed) => {
-    let newState = new Map({"hasStood": true});
+//     let newState = new Map({"hasStood": true});
 
     let dealerHand = currentState.get('dealerHand');
-    let deck = currentState.get('deck');
+//     let deck = currentState.get('deck');
     
     dealerHand = dealerHand.filter((element) => element != new Map());
-
-    while(score(dealerHand) < 17) {
-        let newCards;
-        [deck, newCards] = deal(deck, 1, 1);
-        dealerHand = dealerHand.push(newCards.get(0));
-    }
     
+    let newState = new Map({
+        "hasStood": true,
+        "dealerHand": dealerHand
+    });
+    
+    return currentState.merge(newState);
+};
+
+const determineWinner = (currentState) => {
+    const dealerHand = currentState.get('dealerHand');
+    const playerHand = currentState.get('playerHand');
     let winCount = currentState.get('winCount');
     let lossCount = currentState.get('lossCount');
-    let playerHand = currentState.get('playerHand');
     
     const playerScore = score(playerHand);
     const dealerScore = score(dealerHand);
@@ -55,25 +59,48 @@ const stand = (currentState, seed) => {
     
     if(playerScore > dealerScore || dealerScore > 21) {
         //newState = new Map({"playerWon": true});
+        winCount += 1;
         playerWon = true;
-        winCount = (currentState.get('winCount') + 1);
     } else if(dealerScore > playerScore) {
         //newState = new Map({"playerWon": false});
+        lossCount  += 1;
         playerWon = false;
-        lossCount = (currentState.get('lossCount') + 1);
     }
     
     const gameOver = true;
     
-    newState = newState.merge({
-        dealerHand, deck, winCount, lossCount, gameOver, playerWon
+    const newState = newState.merge({
+        dealerHand, winCount, lossCount, gameOver, playerWon
     });
-
-    //newState = newState.merge({dealerHand, deck, playerWon});
-    //console.log(newState);
-
+    
     return currentState.merge(newState);
+    
 };
+//     while(score(dealerHand) < 17) {
+//         let newCards;
+//         [deck, newCards] = deal(deck, 1, 1);
+//         dealerHand = dealerHand.push(newCards.get(0));
+//     }
+    
+//     let winCount = currentState.get('winCount');
+//     let lossCount = currentState.get('lossCount');
+//     let playerHand = currentState.get('playerHand');
+    
+//     const playerScore = score(playerHand);
+//     const dealerScore = score(dealerHand);
+//     let playerWon = undefined;
+    
+    
+    
+
+    
+
+//     //newState = newState.merge({dealerHand, deck, playerWon});
+//     //console.log(newState);
+
+    
+// };
+
 
 const setRecord = (currentState, wins, losses) => {
     return currentState.merge(new Map({ "winCount": wins, "lossCount": losses }));
@@ -97,6 +124,16 @@ export default function(currentState=new Map(), action) {
     return currentState;
     
 }
+
+const dealToDealer = (currentState, seed) => {
+    const[deck, newCard] = deal(
+        currentState.get('deck'), 1, seed
+    );
+    
+    const dealerHand = currentState.get('dealerHand').push(newCard.get(0));
+    
+    return currentState.merge(new Map({ deck, dealerHand }));
+};
 
 const dealToPlayer = (currentState, seed) => {
     const [deck, newCard] = deal(currentState.get('deck'), 1, seed);
