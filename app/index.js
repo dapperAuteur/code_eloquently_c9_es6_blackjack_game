@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+// import { Map } from 'immutable';
 
 import { AppContainer } from './components/app.js';
 import {createStore, applyMiddleware, compose} from 'redux';
@@ -15,9 +16,11 @@ import { newDeck, deal } from './lib/cards';
 
 require('./css/main.scss');
 
+const initialState = { settings: new Map({speed: 750}) };
+
 const sagaMiddleware = createSagaMiddleware();
 
-let store = createStore(reducer, undefined, compose(applyMiddleware(sagaMiddleware), window.devToolsExtension ? window.devToolsExtension() : f => f));
+const store = createStore(reducer, initialState, compose(applyMiddleware(sagaMiddleware), window.devToolsExtension ? window.devToolsExtension() : f => f));
 
 sagaMiddleware.run(watchActions);
 
