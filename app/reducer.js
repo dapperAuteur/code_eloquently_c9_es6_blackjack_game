@@ -70,7 +70,7 @@ const stand = (currentState, seed) => {
     });
 
     //newState = newState.merge({dealerHand, deck, playerWon});
-    console.log(newState);
+    //console.log(newState);
 
     return currentState.merge(newState);
 };
