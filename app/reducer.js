@@ -69,7 +69,7 @@ const determineWinner = (currentState) => {
     
     const gameOver = true;
     
-    const newState = newState.merge({
+    const newState = new Map({
         dealerHand, winCount, lossCount, gameOver, playerWon
     });
     

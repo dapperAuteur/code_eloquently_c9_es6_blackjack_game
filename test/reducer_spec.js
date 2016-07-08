@@ -309,9 +309,8 @@ describe('reducer', () => {
             });
             
             it('increments win count and sets playerWon if player wins', () => {
-                cardUtils.score.onCall(0).returns(17); // dealer drawing check
-                cardUtils.score.onCall(1).returns(20); // user score
-                cardUtils.score.onCall(2).returns(17); // dealer score
+                cardUtils.score.onCall(0).returns(20); // user score
+                cardUtils.score.onCall(1).returns(17); // dealer score
                 
                 const nextState = stubbedReducer(initialState, action);
                 
@@ -321,9 +320,8 @@ describe('reducer', () => {
             });
             
             it('increments win count and sets playerWon if dealer busts', () => {
-                cardUtils.score.onCall(0).returns(17); // dealer drawing check
-                cardUtils.score.onCall(1).returns(20); // user score
-                cardUtils.score.onCall(2).returns(22); // dealer score
+                cardUtils.score.onCall(0).returns(20); // user score
+                cardUtils.score.onCall(1).returns(22); // dealer score
                 
                 const nextState = stubbedReducer(initialState, action);
                 
@@ -333,21 +331,19 @@ describe('reducer', () => {
             });
             
             it('increments loss count and sets playerWon if dealer wins', () => {
-                cardUtils.score.onCall(0).returns(17); // dealer drawing check
-                cardUtils.score.onCall(1).returns(16); // user score
-                cardUtils.score.onCall(2).returns(17); // dealer score
+                cardUtils.score.onCall(0).returns(16); // user score
+                cardUtils.score.onCall(1).returns(17); // dealer score
                 
                 const nextState = stubbedReducer(initialState, action);
                 
                 expect(nextState.get('winCount')).to.eq(initialState.get('winCount'));
-                expect(nextState.get('lossCount') + 1).to.eq(initialState.get('lossCount'));
-                expect(nextState.get('playerWon')).to.eq(true);
+                expect(nextState.get('lossCount')).to.eq(initialState.get('lossCount') + 1);
+                expect(nextState.get('playerWon')).to.eq(false);
             });
             
             it('does not change counts if tie', () => {
-                cardUtils.score.onCall(0).returns(17); // dealer drawing check
-                cardUtils.score.onCall(1).returns(17); // user score
-                cardUtils.score.onCall(2).returns(17); // dealer score
+                cardUtils.score.onCall(0).returns(17); // user score
+                cardUtils.score.onCall(1).returns(17); // dealer score
                 
                 const nextState = stubbedReducer(initialState, action);
                 
