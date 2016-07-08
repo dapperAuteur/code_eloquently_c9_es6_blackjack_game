@@ -8,6 +8,7 @@ import {createStore, applyMiddleware, compose} from 'redux';
 import { Provider } from 'react-redux';
 import createSagaMiddleware from 'redux-saga';
 import { fromJS, Map } from 'immutable';
+import { Settings } from './components/settings.js';
 
 import reducer from './reducers/index';
 import { setupGame, setRecord } from '../app/action_creators';
@@ -70,6 +71,7 @@ ReactDOM.render(
     <Provider store={store}>
         <Router history={history}>
             <Route path="/" component={AppContainer} />
+            <Route path="/settings" component={Settings} />
         </Router>
     </Provider>,
     document.getElementById('app')

@@ -3,6 +3,7 @@ import { InfoContainer } from './info';
 import Hand from './hand';
 import { connect } from 'react-redux';
 import { GameOverMessageContainer } from './game_over_message';
+import { Link } from 'react-router';
 
 export class App extends React.Component {
     render() {
@@ -13,6 +14,9 @@ export class App extends React.Component {
         
         return (
             <div className="app">
+                <div className="links">
+                    <Link to="/settings">Settings</Link>
+                </div>
                 <h1>aweful React Blackjack</h1>
                 <InfoContainer />
                 { messageComponent }
