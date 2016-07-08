@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-// import { Map } from 'immutable';
+import { Router, Route, hashHistory } from 'react-router';
+import { syncHistoryWithStore } from 'react-router-redux';
 
 import { AppContainer } from './components/app.js';
 import {createStore, applyMiddleware, compose} from 'redux';
@@ -23,6 +24,8 @@ const sagaMiddleware = createSagaMiddleware();
 const store = createStore(reducer, initialState, compose(applyMiddleware(sagaMiddleware), window.devToolsExtension ? window.devToolsExtension() : f => f));
 
 sagaMiddleware.run(watchActions);
+
+const history = syncHistoryWithStore(hashHistory, store);
 
 // let store = createStore(reducer, undefined, window.devToolsExtension ? window.devToolsExtension() : undefined);
 
@@ -65,7 +68,9 @@ console.log(state);
 
 ReactDOM.render(
     <Provider store={store}>
-        <AppContainer />
+        <Router history={history}>
+            <Route path="/" component={AppContainer} />
+        </Router>
     </Provider>,
     document.getElementById('app')
 );
