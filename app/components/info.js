@@ -40,7 +40,7 @@ function mapStateToProps(state) {
 const mapDispatchToProps = (dispatch) => {
     return {
         onClickHit: () => {
-            dispatch(dealToPlayer())
+            dispatch(dealToPlayer());
         },
         onClickStand: () => {
             dispatch(stand());
