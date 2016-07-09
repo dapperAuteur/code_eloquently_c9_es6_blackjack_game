@@ -25,6 +25,7 @@ export class DealerSpeedForm extends React.Component {
                             <input type="radio"
                                    name="speed"
                                    {...speed}
+                                   checked={val == el[1]}
                                    value={el[1]} />
                         </label>
                       ))
