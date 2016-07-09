@@ -11,6 +11,10 @@ const selectorName = (next) => {
     return next.value.SELECT.selector.name;
 };
 
+const callFnName = (next) => {
+    return next.value.CALL.fn.name;
+};
+
 describe('sagas', () => {
     describe('watchActions()', () => {
             const generator = watchActions();
