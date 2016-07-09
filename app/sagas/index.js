@@ -7,14 +7,6 @@ import { dealToDealer, determineWinner } from '../action_creators';
 const getDealerHand = (state) => state.game.get('dealerHand');
 const getSpeed = (state) => state.settings.get('speed');
 
-// console.log dealerScore before showing dealer second card and after
-// export function* onStand() {
-//     let dealerHand = yield select(getDealerHand);
-//     console.log(score(dealerHand));
-//     yield put(dealToDealer());
-//     dealerHand = yield select(getDealerHand);
-//     console.log(score(dealerHand));
-// }
 // when STAND is called
 export function* onStand() {
     const dealSpeed = yield select(getSpeed);

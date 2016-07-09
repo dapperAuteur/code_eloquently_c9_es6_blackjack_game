@@ -28,9 +28,6 @@ sagaMiddleware.run(watchActions);
 
 const history = syncHistoryWithStore(hashHistory, store);
 
-// let store = createStore(reducer, undefined, window.devToolsExtension ? window.devToolsExtension() : undefined);
-
-// store.dispatch(setRecord(0, 0));
 store.dispatch(setupGame());
 
 let deck = newDeck();
@@ -50,20 +47,6 @@ const state = fromJS({
     hasStood: false,
     gameOver: false
 });
-// console.log("start deck:");
-// console.log(deck);
-
-// let playerHand = deck.takeLast(2);
-// deck = deck.skipLast(2);
-// let dealerHand = deck.takeLast(2);
-// deck = deck.skipLast(2);
-
-// console.log("end deck:");
-// console.log(deck);
-// console.log("playerHand:");
-// console.log(playerHand);
-// console.log("dealerHand:");
-// console.log(dealerHand);
 
 console.log(state);
 

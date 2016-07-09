@@ -165,36 +165,13 @@ describe('reducer', () => {
     describe("STAND", () => {
         const action = stand();
         
-        // const cardUtils = { };
-        // const stubbedReducer = proxyquire('../app/reducer.js', {'./lib/cards': cardUtils}).default;
-        
-        // const initialState = new Map({
-        //     hasStood: false,
-        //     dealerHand: new List(),
-        //     winCount: 0,
-        //     lossCount: 0
-        // });
-        
         const initialState = fromJS({
             "hasStood": false,
             dealerHand: [{ suit: 'S', rank: 'K' }, {}]
         });
         
-        // it('sets hasStood to true', () => {
-            
-        //     cardUtils.score = sinon.stub();
-        //     cardUtils.score.returns(21);
-            
-            // const nextState = stubbedReducer(initialState, action);
             const nextState = reducer(initialState, action);
         
-        // expect(nextState.get('hasStood')).to.eq(true);
-        // });
-        
-        // it('removes dummy card', () => {
-        //     const initialState = fromJS({
-        //         dealerHand: [{ suit: 'S', rank: 'K' }, {}]
-        //     });
         it('sets hasStood to true', () => {
             expect(nextState.get('hasStood')).to.eq(true);
         });
@@ -202,95 +179,6 @@ describe('reducer', () => {
         it('removes dummy card', () => {
             expect(nextState.get('dealerHand').size).to.eq(1);
         });
-            
-        //     cardUtils.score = sinon.stub();
-        //     cardUtils.score.returns(21);
-            
-        //     const nextState = stubbedReducer(initialState, action);
-            
-        //     expect(nextState.get('dealerHand').size).to.eq(1);
-        // });
-        
-        // describe('dealer drawing', () => {
-            
-        //     beforeEach( () => {
-        //         cardUtils.score = sinon.stub();
-        //         cardUtils.deal = sinon.stub();
-        //         cardUtils.deal.returns([new List(), new List()]);
-        //     });
-            
-        //     it('does not draw when total is > 17', () => {
-        //         cardUtils.score.returns(18);
-                
-        //         stubbedReducer(initialState, action);
-                
-        //         expect(cardUtils.deal.called).to.eq(false);
-        //     });
-            
-        //     it('stops drawing when total is 17', () => {
-        //         cardUtils.score.onCall(0).returns(10);
-        //         cardUtils.score.onCall(1).returns(17);
-                
-        //         stubbedReducer(initialState, action);
-                
-        //         expect(cardUtils.deal.calledOnce).to.eq(true);
-        //     });
-        // });
-        
-        // describe('determining winner', () => {
-        //     beforeEach( () => {
-        //         cardUtils.score = sinon.stub();
-        //         cardUtils.deal = sinon.stub();
-        //         cardUtils.deal.returns([new List(), new List()]);
-        //     });
-            
-        //     it('increments win count and sets playerWon if player wins', () => {
-        //         cardUtils.score.onCall(0).returns(17); // dealer drawing check
-        //         cardUtils.score.onCall(1).returns(20); //user score
-        //         cardUtils.score.onCall(2).returns(17); //dealer score
-                
-        //         const nextState = stubbedReducer(initialState, action);
-                
-        //         expect(nextState.get('winCount')).to.eq(initialState.get('winCount') + 1);
-        //         expect(nextState.get('lossCount')).to.eq(initialState.get('lossCount'));
-        //         expect(nextState.get('playerWon')).to.eq(true);
-        //     });
-            
-        //     it('increments win count and sets playerWon if dealer busts', () => {
-        //         cardUtils.score.onCall(0).returns(17); // dealer drawing check
-        //         cardUtils.score.onCall(1).returns(20); // user score
-        //         cardUtils.score.onCall(2).returns(22); // dealer score
-                
-        //         const nextState = stubbedReducer(initialState, action);
-                
-        //         expect(nextState.get('winCount')).to.eq(initialState.get('winCount') + 1);
-        //         expect(nextState.get('lossCount')).to.eq(initialState.get('lossCount'));
-        //         expect(nextState.get('playerWon')).to.eq(true);
-        //     });
-            
-        //     it('does not change counts if tie', () => {
-        //         cardUtils.score.onCall(0).returns(17); // dealer drawing back
-        //         cardUtils.score.onCall(1).returns(17); // user score
-        //         cardUtils.score.onCall(2).returns(17); // dealer score
-        //         const nextState = stubbedReducer(initialState, action);
-                
-        //         expect(nextState.get('winCount')).to.eq(initialState.get('winCount'));
-        //         expect(nextState.get('lossCount')).to.eq(initialState.get('lossCount'));
-        //         expect(nextState.get('playerWon')).to.eq(undefined);
-        //     });
-            
-        //     it('increments loss count and sets playerWon if dealer wins', () => {
-        //         cardUtils.score.onCall(0).returns(17); // dealer drawing check
-        //         cardUtils.score.onCall(1).returns(19); // user score
-        //         cardUtils.score.onCall(2).returns(20); // dealer score
-                
-        //         const nextState = stubbedReducer(initialState, action);
-                
-        //         expect(nextState.get('winCount')).to.eq(initialState.get('winCount'));
-        //         expect(nextState.get('lossCount')).to.eq(initialState.get('lossCount') + 1);
-        //         expect(nextState.get('playerWon')).to.eq(false);
-        //     });
-        // });
         
         describe("DETERMINE_WINNER", () => {
             const action = determineWinner();

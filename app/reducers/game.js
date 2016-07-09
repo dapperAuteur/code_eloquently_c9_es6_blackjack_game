@@ -76,31 +76,6 @@ const determineWinner = (currentState) => {
     return currentState.merge(newState);
     
 };
-//     while(score(dealerHand) < 17) {
-//         let newCards;
-//         [deck, newCards] = deal(deck, 1, 1);
-//         dealerHand = dealerHand.push(newCards.get(0));
-//     }
-    
-//     let winCount = currentState.get('winCount');
-//     let lossCount = currentState.get('lossCount');
-//     let playerHand = currentState.get('playerHand');
-    
-//     const playerScore = score(playerHand);
-//     const dealerScore = score(dealerHand);
-//     let playerWon = undefined;
-    
-    
-    
-
-    
-
-//     //newState = newState.merge({dealerHand, deck, playerWon});
-//     //console.log(newState);
-
-    
-// };
-
 
 const setRecord = (currentState, wins, losses) => {
     return currentState.merge(new Map({ "winCount": wins, "lossCount": losses }));

@@ -13,7 +13,6 @@ const selectorName = (next) => {
 
 describe('sagas', () => {
     describe('watchActions()', () => {
-        // it('??', () => {
             const generator = watchActions();
             const next = generator.next();
             
