@@ -49,5 +49,26 @@ describe('sagas', () => {
                 
             });
         });
+        
+        context('when dealer draws', () => {
+            it('yields correct effects', () => {
+                cardUtils.score.onCall(0).returns(10);
+                cardUtils.score.onCall(0).returns(21);
+                
+                expect(actionType(generator.next())).to.eq('DEAL_TO_DEALER');
+                
+                expect(selectorName(generator.next())).to.eq('getDealerHand');
+                
+                expect(callFnName(generator.next())).to.eq('delay');
+                
+                expect(actionType(generator.next())).to.eq('DEAL_TO_DEALER');
+                
+                expect(selectorName(generator.next())).to.eq('getDealerHand');
+                
+                expect(actionType(generator.next())).to.eq('DETERMINE_WINNER');
+                
+                expect(generator.next().done).to.eq(true);
+            });
+        });
     });
 });
