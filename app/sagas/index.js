@@ -3,9 +3,12 @@ import { takeLatest, delay } from 'redux-saga';
 import { select, put, call } from 'redux-saga/effects';
 import { score } from '../lib/cards';
 import { dealToDealer, determineWinner } from '../action_creators';
+import { fetchUser } from '../lib/api';
 
 const getDealerHand = (state) => state.game.get('dealerHand');
 const getSpeed = (state) => state.settings.get('speed');
+
+const getUserToken = (state) => state.settings.get('userToken');
 
 // when STAND is called
 export function* onStand() {
@@ -32,8 +35,9 @@ export function* onStand() {
 }
 
 export function* onFetchRecord() {
-    console.log('fetching record');
-    yield put(setRecord(0, 0, 0));
+    const userToken = yield select(getUserToken);
+    const user = yield call(fetchUser, userToken);
+    yield put(setRecord(user.win_count, user.loss_count, user.tie_count));
 }
 
 export default function*() {

@@ -19,6 +19,7 @@
   "license": "ISC",
   "dependencies": {
     "immutable": "^3.8.1",
+    "isomorphic-fetch": "^2.2.1",
     "query-string": "^4.2.0",
     "randomstring": "^1.1.5",
     "react": "^15.1.0",
