@@ -8,9 +8,25 @@ import { Link } from 'react-router';
 export class App extends React.Component {
     render() {
         let messageComponent;
-        if(this.props.gameOver) {
-            messageComponent = <GameOverMessageContainer win={this.props.playerWon} />;
+        let gameComponents;
+        if(this.props.fetchingRecord) {
+            gameComponents = <h1>Loading record...</h1>;
+        } else {
+            gameComponents = (
+                <div class="game">
+                    <InfoContainer />
+                    { messageComponent }
+                    <strong>Player hand:</strong>
+                    <Hand cards={this.props.playerHand } />
+                    <strong>Dealer hand:</strong>
+                    <Hand cards={this.props.dealerHand } />
+                </div>
+            );
         }
+        
+        // if(this.props.gameOver) {
+        //     messageComponent = <GameOverMessageContainer win={this.props.playerWon} />;
+        // }
         
         return (
             <div className="app">
@@ -18,23 +34,19 @@ export class App extends React.Component {
                     <Link to="/settings">Settings</Link>
                 </div>
                 <h1>aweful React Blackjack</h1>
-                <InfoContainer />
-                { messageComponent }
-                <strong>Player hand:</strong>
-                <Hand cards={this.props.playerHand } />
-                <strong>Dealer hand:</strong>
-                <Hand cards={this.props.dealerHand } />
+                {gameComponents}
             </div>
             );
     }
-};
+}
 
 function mapStateToProps(state) {
     return {
         playerHand: state.game.get('playerHand'),
         dealerHand: state.game.get('dealerHand'),
         gameOver: state.game.get('gameOver'),
-        playerWon: state.game.get('playerWon')
+        playerWon: state.game.get('playerWon'),
+        fetchingRecord: state.api.get('fetchingRecord')
     };
 }
 

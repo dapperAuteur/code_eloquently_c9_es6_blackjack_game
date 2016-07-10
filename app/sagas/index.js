@@ -2,7 +2,7 @@ import 'babel-polyfill';
 import { takeLatest, delay } from 'redux-saga';
 import { select, put, call } from 'redux-saga/effects';
 import { score } from '../lib/cards';
-import { dealToDealer, determineWinner } from '../action_creators';
+import { dealToDealer, determineWinner, setRecord, fetchingRecord, fetchedRecord } from '../action_creators';
 import { fetchUser } from '../lib/api';
 
 const getDealerHand = (state) => state.game.get('dealerHand');
@@ -36,7 +36,9 @@ export function* onStand() {
 
 export function* onFetchRecord() {
     const userToken = yield select(getUserToken);
+    yield put(fetchingRecord());
     const user = yield call(fetchUser, userToken);
+    yield put(fetchedRecord());
     yield put(setRecord(user.win_count, user.loss_count, user.tie_count));
 }
 
