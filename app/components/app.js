@@ -9,6 +9,9 @@ export class App extends React.Component {
     render() {
         let messageComponent;
         let gameComponents;
+        if(this.props.gameOver) {
+            messageComponent = <GameOverMessageContainer win={this.props.playerWon} />;
+        }
         if(this.props.fetchingRecord) {
             gameComponents = <h1>Loading record...</h1>;
         } else {

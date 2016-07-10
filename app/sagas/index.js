@@ -47,6 +47,7 @@ export function* onFetchRecord() {
     yield put(setRecord(user.win_count, user.loss_count, user.tie_count));
 }
 
+// body of the request to the rails server
 export function* onPatchRecord() {
     const userToken = yield select(getUserToken);
     const winCount = yield select(getWinCount);
