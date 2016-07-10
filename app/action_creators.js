@@ -34,3 +34,11 @@ export function setSpeed(speed) {
 export function fetchRecord () {
     return { "type": "FETCH_RECORD" };
 }
+
+export function fetchingRecord() {
+    return { "type": "FETCHING_RECORD" };
+}
+
+export function fetchedRecord() {
+    return { "type": "FETCHED_RECORD" };
+}
