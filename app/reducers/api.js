@@ -9,6 +9,11 @@ export default function(currentState = new Map(), action) {
             return currentState.set('fetchingRecord', true);
         case 'FETCHED_RECORD':
             return currentState.set('fetchingRecord', false);
+    // swtich case statements to add message while game is saving
+        case 'PATCHING_RECORD':
+            return currentState.set('patchingRecord', true);
+        case 'PATCHED_RECORD':
+            return currentState.set('patchingRecord', false);
     }
     
     return currentState;

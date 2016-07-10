@@ -12,6 +12,7 @@ export class App extends React.Component {
         if(this.props.gameOver) {
             messageComponent = <GameOverMessageContainer win={this.props.playerWon} />;
         }
+        // if/else statement that displays loading message until it fetches user record
         if(this.props.fetchingRecord) {
             gameComponents = <h1>Loading record...</h1>;
         } else {
@@ -27,17 +28,16 @@ export class App extends React.Component {
             );
         }
         
-        // if(this.props.gameOver) {
-        //     messageComponent = <GameOverMessageContainer win={this.props.playerWon} />;
-        // }
-        
-        return (
+        return (// displays saving message while saving user record to rails server
             <div className="app">
                 <div className="links">
                     <Link to="/settings">Settings</Link>
                 </div>
                 <h1>aweful React Blackjack</h1>
                 {gameComponents}
+                {this.props.patchingRecord ?
+                    "Saving..."
+                    : "" }
             </div>
             );
     }
@@ -49,7 +49,8 @@ function mapStateToProps(state) {
         dealerHand: state.game.get('dealerHand'),
         gameOver: state.game.get('gameOver'),
         playerWon: state.game.get('playerWon'),
-        fetchingRecord: state.api.get('fetchingRecord')
+        fetchingRecord: state.api.get('fetchingRecord'),
+        patchingRecord: state.api.get('patchingRecord')
     };
 }
 
