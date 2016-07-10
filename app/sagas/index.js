@@ -2,8 +2,13 @@ import 'babel-polyfill';
 import { takeLatest, delay } from 'redux-saga';
 import { select, put, call } from 'redux-saga/effects';
 import { score } from '../lib/cards';
-import { dealToDealer, determineWinner, setRecord, fetchingRecord, fetchedRecord } from '../action_creators';
-import { fetchUser } from '../lib/api';
+import { dealToDealer, determineWinner, setRecord, fetchingRecord, fetchedRecord, patchingRecord, patchedRecord } from '../action_creators';
+import { fetchUser, patchUser } from '../lib/api';
+
+// get win/loss count from state to share with Rails api
+const getWinCount = (state) => state.game.get('winCount');
+const getLossCount = (state) => state.game.get('lossCount');
+// const getTieCount = (state) => state.game.get('tieCount');
 
 const getDealerHand = (state) => state.game.get('dealerHand');
 const getSpeed = (state) => state.settings.get('speed');
@@ -42,8 +47,25 @@ export function* onFetchRecord() {
     yield put(setRecord(user.win_count, user.loss_count, user.tie_count));
 }
 
+export function* onPatchRecord() {
+    const userToken = yield select(getUserToken);
+    const winCount = yield select(getWinCount);
+    const lossCount = yield select(getLossCount);
+    // const tieCount = yield select(getTieCount);
+    yield put(patchingRecord());
+    yield call(patchUser, userToken, {
+        user: {
+            'win_count': winCount,
+            'loss_count': lossCount//,
+            //'tie_count': tieCount
+        }
+    });
+    yield put(patchedRecord());
+}
+
 export default function*() {
     yield [ takeLatest('STAND', onStand),
-            takeLatest('FETCH_RECORD', onFetchRecord)
+            takeLatest('FETCH_RECORD', onFetchRecord),
+            takeLatest('SETUP_RECORD', onPatchRecord)
     ];
 }
