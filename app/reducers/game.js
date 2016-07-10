@@ -18,6 +18,7 @@ const setupGame = (currentState, seed) => {
     let playerWon = undefined;
     let winCount = currentState.get('winCount') || 0;
     let lossCount = currentState.get('lossCount') || 0;
+    let tieCount = currentState.get('tieCount') || 0;
 
     if(score(playerHand) == 21) {
         gameOver = true;
@@ -25,7 +26,7 @@ const setupGame = (currentState, seed) => {
         winCount += 1;
     }
     
-    const newState = new Map({ deck, playerHand, dealerHand, hasStood, gameOver, playerWon, winCount, lossCount
+    const newState = new Map({ deck, playerHand, dealerHand, hasStood, gameOver, playerWon, winCount, lossCount, tieCount
     });
     
     return currentState.merge(newState);
@@ -52,6 +53,7 @@ const determineWinner = (currentState) => {
     const playerHand = currentState.get('playerHand');
     let winCount = currentState.get('winCount');
     let lossCount = currentState.get('lossCount');
+    let tieCount = currentState.get('tieCount');
     
     const playerScore = score(playerHand);
     const dealerScore = score(dealerHand);
@@ -65,20 +67,23 @@ const determineWinner = (currentState) => {
         //newState = new Map({"playerWon": false});
         lossCount  += 1;
         playerWon = false;
+    } else if(dealerScore == playerScore) {
+        tieCount += 1;
+        playerWon = undefined;
     }
     
     const gameOver = true;
     
     const newState = new Map({
-        dealerHand, winCount, lossCount, gameOver, playerWon
+        dealerHand, winCount, lossCount, tieCount, gameOver, playerWon
     });
     
     return currentState.merge(newState);
     
 };
 
-const setRecord = (currentState, wins, losses) => {
-    return currentState.merge(new Map({ "winCount": wins, "lossCount": losses }));
+const setRecord = (currentState, wins, losses, ties) => {
+    return currentState.merge(new Map({ "winCount": wins, "lossCount": losses, "tieCount": ties }));
 };
 
 export default function(currentState=new Map(), action) {
@@ -86,7 +91,7 @@ export default function(currentState=new Map(), action) {
         case 'SETUP_GAME':
             return setupGame(currentState, action.seed);
         case 'SET_RECORD':
-            return setRecord(currentState, action.wins, action.losses);
+            return setRecord(currentState, action.wins, action.losses, action.ties);
         case 'DEAL_TO_PLAYER':
             return dealToPlayer(currentState, action.seed);
         case 'STAND':
@@ -133,6 +138,13 @@ const dealToPlayer = (currentState, seed) => {
         const gameOver = true;
         const playerWon = true;
         newState = newState.merge({winCount, gameOver, playerWon});
+    }
+    
+    if(newScore == dealerScore) {
+        const tieCount = currentState.get('tieCount') + 1;
+        const gameOver = true;
+        const playerWon = undefined;
+        newState = newState.merge({tieCount, gameOver, playerWon});
     }
     
     return currentState.merge(newState);

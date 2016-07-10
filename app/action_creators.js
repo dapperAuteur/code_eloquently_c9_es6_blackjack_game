@@ -2,11 +2,12 @@ export function setupGame(seed=new Date().getTime()) {
     return { "type": "SETUP_GAME", seed };
 }
 
-export function setRecord(wins, losses) {
+export function setRecord(wins, losses, ties) {
     return {
         "type": "SET_RECORD",
         wins,
-        losses
+        losses,
+        ties
     };
 }
 
@@ -28,4 +29,8 @@ export function determineWinner() {
 
 export function setSpeed(speed) {
     return { "type": "SET_SPEED", speed };
+}
+
+export function fetchRecord () {
+    return { "type": "FETCH_RECORD" };
 }

@@ -11,6 +11,7 @@ describe('<Info />', () => {
         const onClickStandSpy = sinon.spy();
         const rendered = shallow(<Info winCount={1}
                                        lossCount={2}
+                                       tieCount={5}
                                        gameOver={false}
                                        hasStood={false}
                                        onClickHit={onClickHitSpy}
@@ -20,6 +21,7 @@ describe('<Info />', () => {
         it('displays record', () => {
             expect(rendered).to.include.text("Wins: 1");
             expect(rendered).to.include.text("Losses: 2");
+            expect(rendered).to.include.text("Ties: 5");
         });
         
         const buttons = rendered.find('button');
@@ -47,7 +49,7 @@ describe('<Info />', () => {
     });
     
     describe('when hasStood is true', () => {
-        const rendered = shallow(<Info winCount={1} lossCount={2} hasStood={true} />);
+        const rendered = shallow(<Info winCount={1} lossCount={2} tieCount={5} hasStood={true} />);
         
         it('disables hit and stand buttons', () => {
             const buttons = rendered.find('button');
@@ -62,6 +64,7 @@ describe('<Info />', () => {
         const onClickStandSpy = sinon.spy();
         const rendered = shallow(<Info winCount={1}
                                       lossCount={2}
+                                      tieCount={5}
                                       gameOver={false}
                                       hasStood={false}
                                       onClickHit={onClickHitSpy}
@@ -71,6 +74,7 @@ describe('<Info />', () => {
         it('displays record', () => {
             expect(rendered).to.include.text("Wins: 1");
             expect(rendered).to.include.text("Losses: 2");
+            expect(rendered).to.include.text("Ties: 5");
         });
         
         const buttons = rendered.find('button');

@@ -19,6 +19,7 @@ const state = fromJS({
     dealerHand,
     "winCount": 0,
     "lossCount": 0,
+    "tieCount": 0,
     hasStood: false
 });
 

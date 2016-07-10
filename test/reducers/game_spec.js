@@ -76,7 +76,7 @@ describe('reducer', () => {
         });
         
         describe("with existing initial state", () => {
-            const initialState = new Map({'winCount':10, 'lossCount': 7, 'deck': 'fake deck'});
+            const initialState = new Map({'winCount':10, 'lossCount': 7,'tieCount': 5, 'deck': 'fake deck'});
             const nextState = stubbedReducer(initialState, action);
             
             it('adds new variables', () => {
@@ -86,6 +86,7 @@ describe('reducer', () => {
             it('keeps old variables', () => {
                 expect(nextState.get('winCount')).to.eq(10);
                 expect(nextState.get('lossCount')).to.eq(7);
+                expect(nextState.get('tieCount')).to.eq(5);
             });
             
             it('overwrites old variables', () => {
@@ -95,14 +96,15 @@ describe('reducer', () => {
     });
     
     describe("SET_RECORD", () => {
-        const action = setRecord(3, 2);
+        const action = setRecord(3, 2, 1);
         
-        const initialState = new Map({'winCount': 10, 'lossCount': 7, 'deck': 'fake deck'});
+        const initialState = new Map({'winCount': 10, 'lossCount': 7,'tieCount': 5, 'deck': 'fake deck'});
         const nextState = reducer(initialState, action);
         
         it('sets winCount and lossCount', () => {
             expect(nextState.get('winCount')).to.eq(3);
             expect(nextState.get('lossCount')).to.eq(2);
+            expect(nextState.get('tieCount')).to.eq(1);
         });
         
         it('keeps old variables', () => {
@@ -193,7 +195,8 @@ describe('reducer', () => {
                 dealerHand: new List(),
                 playerHand: new List(),
                 winCount: 11,
-                lossCount: 15
+                lossCount: 15,
+                tieCount: 5
             });
             
             beforeEach( () => {
@@ -210,6 +213,7 @@ describe('reducer', () => {
                 
                 expect(nextState.get('winCount')).to.eq(initialState.get('winCount') + 1);
                 expect(nextState.get('lossCount')).to.eq(initialState.get('lossCount'));
+                expect(nextState.get('tieCount')).to.eq(initialState.get('tieCount'));
                 expect(nextState.get('playerWon')).to.eq(true);
             });
             
@@ -221,6 +225,7 @@ describe('reducer', () => {
                 
                 expect(nextState.get('winCount')).to.eq(initialState.get('winCount') + 1);
                 expect(nextState.get('lossCount')).to.eq(initialState.get('lossCount'));
+                expect(nextState.get('tieCount')).to.eq(initialState.get('tieCount'));
                 expect(nextState.get('playerWon')).to.eq(true);
             });
             
@@ -232,10 +237,11 @@ describe('reducer', () => {
                 
                 expect(nextState.get('winCount')).to.eq(initialState.get('winCount'));
                 expect(nextState.get('lossCount')).to.eq(initialState.get('lossCount') + 1);
+                expect(nextState.get('tieCount')).to.eq(initialState.get('tieCount'));
                 expect(nextState.get('playerWon')).to.eq(false);
             });
             
-            it('does not change counts if tie', () => {
+            it('increments loss count if tie', () => {
                 cardUtils.score.onCall(0).returns(17); // user score
                 cardUtils.score.onCall(1).returns(17); // dealer score
                 
@@ -243,6 +249,7 @@ describe('reducer', () => {
                 
                 expect(nextState.get('winCount')).to.eq(initialState.get('winCount'));
                 expect(nextState.get('lossCount')).to.eq(initialState.get('lossCount'));
+                expect(nextState.get('tieCount')).to.eq(initialState.get('tieCount') + 1);
                 expect(nextState.get('playerWon')).to.eq(undefined);
             });
         });

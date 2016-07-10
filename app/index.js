@@ -11,15 +11,21 @@ import { fromJS, Map } from 'immutable';
 import { Settings } from './components/settings.js';
 
 import reducer from './reducers/index';
-import { setupGame, setRecord } from '../app/action_creators';
+import { setupGame, fetchRecord } from '../app/action_creators';
 import watchActions from './sagas/index';
+
+import queryString from 'query-string';
+import randomstring from 'randomstring';
 
 import { newDeck, deal } from './lib/cards';
 
 require('./css/main.scss');
 
-const initialState = { settings: new Map({speed: 750}) };
+const userToken = queryString.parse(window.location.search).token || randomstring.generate(12);
 
+const initialState = {
+    settings: new Map({speed: 750, userToken})
+};
 const sagaMiddleware = createSagaMiddleware();
 
 const store = createStore(reducer, initialState, compose(applyMiddleware(sagaMiddleware), window.devToolsExtension ? window.devToolsExtension() : f => f));
@@ -44,6 +50,7 @@ const state = fromJS({
     dealerHand,
     "winCount": 0,
     "lossCount": 0,
+    "tieCount": 0,
     hasStood: false,
     gameOver: false
 });

@@ -31,6 +31,13 @@ export function* onStand() {
     yield put(determineWinner());
 }
 
+export function* onFetchRecord() {
+    console.log('fetching record');
+    yield put(setRecord(0, 0, 0));
+}
+
 export default function*() {
-    yield takeLatest('STAND', onStand);
+    yield [ takeLatest('STAND', onStand),
+            takeLatest('FETCH_RECORD', onFetchRecord)
+    ];
 }

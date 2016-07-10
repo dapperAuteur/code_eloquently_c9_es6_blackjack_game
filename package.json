@@ -19,6 +19,8 @@
   "license": "ISC",
   "dependencies": {
     "immutable": "^3.8.1",
+    "query-string": "^4.2.0",
+    "randomstring": "^1.1.5",
     "react": "^15.1.0",
     "react-dom": "^15.1.0",
     "react-redux": "^4.4.5",

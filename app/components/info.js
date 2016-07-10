@@ -11,7 +11,7 @@ export class Info extends React.Component {
         return (
             <div id="info">
                 <span id="player_record">
-                    Wins: {this.props.winCount} Losses: {this.props.lossCount}
+                    Wins: {this.props.winCount} Losses: {this.props.lossCount} Ties: {this.props.tieCount}
                 </span>
                 <span id="buttons">
                     <button disabled={disableButtons}
@@ -32,6 +32,7 @@ function mapStateToProps(state) {
     return {
         winCount: state.game.get('winCount'),
         lossCount: state.game.get('lossCount'),
+        tieCount: state.game.get('tieCount'),
         hasStood: state.game.get('hasStood'),
         gameOver: state.game.get('gameOver')
     };
