@@ -18,3 +18,14 @@ export function fetchUser(token) {
         }
     }).then(response => response.json());
 }
+
+// function in api utility file that sends a PATCH request to Rails server, similar to GET request to fetch record, only difference is this one needs to send some data, (new/loss,tie counters) to server using body with request
+export function patchUser(token, body) {
+    return fetch(makeUrl(token), {
+        method: 'PATCH',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(body)
+    }).then(response => response.json());
+}

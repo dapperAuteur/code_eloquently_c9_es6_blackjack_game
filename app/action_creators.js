@@ -31,6 +31,7 @@ export function setSpeed(speed) {
     return { "type": "SET_SPEED", speed };
 }
 
+// the 3 fetch functions are used to fetch user record and prevent game from loading until user record is retrieved
 export function fetchRecord () {
     return { "type": "FETCH_RECORD" };
 }
@@ -43,6 +44,7 @@ export function fetchedRecord() {
     return { "type": "FETCHED_RECORD" };
 }
 
+// the 3 patch functions update the record on the server
 export function patchRecord() {
     return { "type": "PATCH_RECORD" };
 }
