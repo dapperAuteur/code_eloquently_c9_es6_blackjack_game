@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { dealToPlayer, stand } from '../../app/action_creators';
 
+// export info function and result to rest of app
 export class Info extends React.Component {
     render() {
         let disableButtons = false;
@@ -28,6 +29,7 @@ export class Info extends React.Component {
     }
 };
 
+// connect the component with the state being tracked by Redux store, function will take a single parameter: the state object, and return a mapping of the names of this component's props (winCount, lossCount, tieCount, hasStood, gameOver) to variables in state
 function mapStateToProps(state) {
     return {
         winCount: state.game.get('winCount'),
@@ -38,6 +40,7 @@ function mapStateToProps(state) {
     };
 }
 
+// connect the component with the action being tracked by Redux store, function will take a single parameter: the state object, and return a mapping of the names of this component's actions to variables in state
 const mapDispatchToProps = (dispatch) => {
     return {
         onClickHit: () => {
@@ -49,4 +52,5 @@ const mapDispatchToProps = (dispatch) => {
     };
 };
 
+// export component container and actions to app
 export const InfoContainer = connect(mapStateToProps, mapDispatchToProps)(Info);

@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router';
 import { DealerSpeedFormContainer } from './dealer_speed_form';
 
+// export Settings function and result to app
 export class Settings extends React.Component {
     render() {
         return (

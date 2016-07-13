@@ -42,7 +42,7 @@ export class App extends React.Component {
             );
     }
 }
-
+// connect the component with the state being tracked by Redux store, function will take a single parameter: the state object, and return a mapping of the names of this component's props (gameOver, playerWon, fetchingRecord, patchingRecord, playerHand, dealerHand) to variables in state
 function mapStateToProps(state) {
     return {
         playerHand: state.game.get('playerHand'),
@@ -54,4 +54,5 @@ function mapStateToProps(state) {
     };
 }
 
+// exports this component and the state changes made to the rest of the components in this application
 export const AppContainer = connect(mapStateToProps)(App);

@@ -1,6 +1,7 @@
 import React from 'react';
 import Card from './card';
 
+// exports component hand function/result to app
 export default class Hand extends React.Component {
     render() {
         return (

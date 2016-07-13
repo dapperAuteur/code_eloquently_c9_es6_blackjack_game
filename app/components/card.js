@@ -1,5 +1,5 @@
 import React from 'react';
-
+// the Card component exports the data for each card so the other components in the application may access it
 export default class Card extends React.Component {
     render() {
         return (

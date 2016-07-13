@@ -1,6 +1,7 @@
 import { fromJS, List } from 'immutable';
 import seedrandom from 'seedrandom';
 
+// export shuffle function to app
 export const shuffle = (array, seed) => {
     let j, x, i;
     for (i = array.length; i; i -= 1) {
@@ -11,6 +12,7 @@ export const shuffle = (array, seed) => {
     }
 };
 
+// export newDeck with shuffle functions to app
 export const newDeck = (seed) => {
     const ranks = ['A', 2, 3, 4, 5, 6, 7, 8, 9, 10, 'J', 'Q', 'K'];
     const suits = ['S', 'C', 'H', 'D'];
@@ -47,6 +49,7 @@ export const deal = (deck, n, seed) => {
     return [newDeck, dealtCards];
 };
 
+// converts face cards to numerical value of 10
 export const rankAsNum = (rank) => {
     if(rank == 'K' || rank == 'Q' || rank == 'J') {
         return 10;
@@ -55,6 +58,7 @@ export const rankAsNum = (rank) => {
     }
 };
 
+// exports score after it calculates score of hand and determines when an Ace should be 1 or 11
 export const score = (cards) => {
     const aces = cards.filter((card) => card.get('rank') == 'A');
     const nonAces = cards.filter((card) => card.get('rank') != 'A');

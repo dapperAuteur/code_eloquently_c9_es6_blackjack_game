@@ -2,7 +2,7 @@ import { Map } from 'immutable';
 
 import { newDeck, deal, score } from '../lib/cards';
 
-
+// prop sets up game for new or returning user stats
 const setupGame = (currentState, seed) => {
     let deck = newDeck(seed);
     let playerHand, dealerHand;
@@ -19,25 +19,23 @@ const setupGame = (currentState, seed) => {
     let winCount = currentState.get('winCount') || 0;
     let lossCount = currentState.get('lossCount') || 0;
     let tieCount = currentState.get('tieCount') || 0;
-
+// determines what happens when player hand is 21
     if(score(playerHand) == 21) {
         gameOver = true;
         playerWon = true;
         winCount += 1;
     }
-    
+   // creates prop called newState and shares it with app and components 
     const newState = new Map({ deck, playerHand, dealerHand, hasStood, gameOver, playerWon, winCount, lossCount, tieCount
     });
     
     return currentState.merge(newState);
 };
-
+// creates stand prop
 const stand = (currentState, seed) => {
-//     let newState = new Map({"hasStood": true});
 
     let dealerHand = currentState.get('dealerHand');
-//     let deck = currentState.get('deck');
-    
+
     dealerHand = dealerHand.filter((element) => element != new Map());
     
     let newState = new Map({
