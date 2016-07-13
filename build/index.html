@@ -8,6 +8,17 @@
     <body>
         <div id="app">
             
+            <script src="https://www.gstatic.com/firebasejs/3.2.0/firebase.js"></script>
+            <script>
+              // Initialize Firebase
+              var config = {
+                apiKey: "AIzaSyBiiq25PMSEeZpK3F9J3IP9o3dmzDOUJCQ",
+                authDomain: "react-blackjack.firebaseapp.com",
+                databaseURL: "https://react-blackjack.firebaseio.com",
+                storageBucket: "",
+              };
+              firebase.initializeApp(config);
+            </script>
             <script src="./bundle.js"></script>
         </div>
     </body>
