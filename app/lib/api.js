@@ -4,7 +4,7 @@ import url from 'url';
 function makeUrl(token) {
     const pathname = `users/${token}`;
     return url.format({
-        hostname: "https://code-eloquently-es6-blackjack-dapperauteur.c9users.io",
+        hostname: "react-blackjack.firebaseapp.com",
         port: 8081,
         pathname
     });
